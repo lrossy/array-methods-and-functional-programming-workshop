@@ -123,13 +123,35 @@ function pluck(property, arrayOfObjects) {
 function flatten(theArray) {
 
 }
-
-function negate1(predicate) {
-
+function isEven(num) {
+    return num % 2 === 0;
 }
 
-function negate2(predicate) {
+// var isOdd = negate1(isEven); // function that returns the opposite of isEven for the same input
+//
+//
+// console.log(isEven(3));
+// console.log(isOdd(3));
+function negate1(predicate) {
+    return function(x) {
+        return !predicate(x)
+    }
+}
 
+function firstDividesSecond(first, second) {
+    console.log('firstDividesSecond',first, second);
+    console.log('firstDividesSecond',second % first === 0);
+    return second % first === 0;
+}
+
+var firstDoesNotDivideSecond = negate2(firstDividesSecond);
+
+console.log(firstDoesNotDivideSecond(5,10));
+
+function negate2(predicate) {
+    return function() {
+        return !predicate.apply(undefined, arguments)
+    };
 }
 
 
@@ -153,26 +175,27 @@ function compose1(fun1, fun2) {
     }
 }
 
-// Takes a string, returns a string
-function toLowerCase(str) {
-    return str.toLowerCase();
-}
-// Takes a string, returns an array
-function splitByWord(str) {
-    return str.split(' ');
-}
-// Takes an array, returns a string
-function joinWithDashes(arrOfWords) {
-    return arrOfWords.join('-');
-}
-
-// Takes a string, returns a string by doing toLowerCase -> splitByWord -> joinWithDashes
-var createSlug = compose2([joinWithDashes, splitByWord, toLowerCase]);
-
-; // the-quick-brown-fox
- console.log(createSlug('The Quick Brown Fox'));
+// // Takes a string, returns a string
+// function toLowerCase(str) {
+//     return str.toLowerCase();
+// }
+// // Takes a string, returns an array
+// function splitByWord(str) {
+//     return str.split(' ');
+// }
+// // Takes an array, returns a string
+// function joinWithDashes(arrOfWords) {
+//     return arrOfWords.join('-');
+// }
+//
+// // Takes a string, returns a string by doing toLowerCase -> splitByWord -> joinWithDashes
+// var createSlug = compose2([joinWithDashes, splitByWord, toLowerCase]);
+//
+// ; // the-quick-brown-fox
+//  console.log(createSlug('The Quick Brown Fox'));
 
 function compose2(arrOfFuncs) {
+
     return function(x){
         // console.log('x',x);
         var val = x;
